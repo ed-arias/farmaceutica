@@ -26,6 +26,8 @@ public class Pedido implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idPedido;
     private LocalDateTime fechaPedido;
+    private String direccionEntrega;
+    private Float totalPedido;
 
     @ManyToOne
     @JoinColumn(name = "fk_cliente")
@@ -45,5 +47,11 @@ public class Pedido implements Serializable{
     public void agregarOferta(Oferta oferta){
         oferta.setPedido(this);
         this.ofertas.add(oferta);
+    }
+
+    public void calcularTotalPedido(){
+        this.totalPedido = this.items.stream()
+            .map(Item::getTotalItem)
+            .reduce(0f, (a, b) -> a + b);
     }
 }

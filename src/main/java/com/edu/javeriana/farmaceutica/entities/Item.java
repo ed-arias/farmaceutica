@@ -22,7 +22,7 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idItem;
     private Integer cantidadSolicitada;
-    private Float precioTotal;
+    private Float totalItem;
 
     @OneToOne
     @JoinColumn(name = "fk_medicamento")

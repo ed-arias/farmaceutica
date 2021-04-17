@@ -28,10 +28,7 @@ public class ClienteService {
 
         cliente = clienteRespository.save(cliente);
 
-        clienteModel.setDireccion(cliente.getDireccion());
         clienteModel.setId(cliente.getIdCliente());
-        clienteModel.setNit(cliente.getNit());
-        clienteModel.setRazonSocial(cliente.getRazonSocial());
 
         return clienteModel;
     }

@@ -49,4 +49,18 @@ public class MedicamentoService {
         return medicamentosModel;
     }
 
+    public MedicamentoModel crearMedicamento(MedicamentoModel medicamentoModel) {
+        Medicamento medicamento = new Medicamento();
+
+        medicamento.setDescripcion(medicamentoModel.getDescripcion());
+        medicamento.setNombre(medicamentoModel.getNombre());
+        medicamento.setPrecioUnitario(medicamentoModel.getPrecioUnitario());
+
+        medicamento = medicamentoRepository.save(medicamento);
+
+        medicamentoModel.setId(medicamento.getIdMedicamento());
+
+        return medicamentoModel;
+    }
+
 }
