@@ -27,6 +27,7 @@ public class Pedido implements Serializable{
     private Long idPedido;
     private LocalDateTime fechaPedido;
     private String direccionEntrega;
+    private String zipDestino;
     private Float totalPedido;
 
     @ManyToOne

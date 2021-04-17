@@ -2,8 +2,8 @@ package com.edu.javeriana.farmaceutica.api;
 
 import java.util.List;
 
-import com.edu.javeriana.farmaceutica.models.ItemModelRequest;
 import com.edu.javeriana.farmaceutica.models.PedidoModel;
+import com.edu.javeriana.farmaceutica.models.PedidoRequestModel;
 import com.edu.javeriana.farmaceutica.services.PedidoService;
 
 import org.springframework.http.HttpStatus;
@@ -25,9 +25,9 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @PostMapping("/clientes/{id}/pedidos")
-    public ResponseEntity<PedidoModel> crearPedido(@PathVariable Long id, @RequestBody List<ItemModelRequest> items)
+    public ResponseEntity<PedidoModel> crearPedido(@PathVariable Long id, @RequestBody PedidoRequestModel pedidoRequestModel)
             throws Exception {
-        return new ResponseEntity<>(pedidoService.crearPedido(id, items), HttpStatus.OK);
+        return new ResponseEntity<>(pedidoService.crearPedido(id, pedidoRequestModel), HttpStatus.OK);
     }
 
     @GetMapping("/pedidos/{id}")

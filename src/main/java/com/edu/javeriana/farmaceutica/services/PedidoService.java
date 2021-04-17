@@ -12,6 +12,7 @@ import com.edu.javeriana.farmaceutica.entities.Pedido;
 import com.edu.javeriana.farmaceutica.models.ItemModelRequest;
 import com.edu.javeriana.farmaceutica.models.ItemModelResponse;
 import com.edu.javeriana.farmaceutica.models.PedidoModel;
+import com.edu.javeriana.farmaceutica.models.PedidoRequestModel;
 import com.edu.javeriana.farmaceutica.repositories.ClienteRespository;
 import com.edu.javeriana.farmaceutica.repositories.MedicamentoRepository;
 import com.edu.javeriana.farmaceutica.repositories.PedidoRepository;
@@ -28,18 +29,20 @@ public class PedidoService {
     private final MedicamentoRepository medicamentoRepository;
     private final PedidoRepository pedidoRepository;
 
-    public PedidoModel crearPedido(Long idCliente, List<ItemModelRequest> items) throws Exception {
+    public PedidoModel crearPedido(Long idCliente, PedidoRequestModel pedidoRequestModel) throws Exception {
 
         Pedido pedido = new Pedido();
 
         Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new Exception("Cliente no encontrado con id: " + idCliente));
 
-        pedido.setFechaPedido(LocalDateTime.now());
         pedido.setCliente(cliente);
+        pedido.setDireccionEntrega(pedidoRequestModel.getDireccionEntrega());
+        pedido.setFechaPedido(LocalDateTime.now());
+        pedido.setZipDestino(pedidoRequestModel.getZipDestino());
 
         List<Medicamento> medicamentos = new ArrayList<>();
-        for (ItemModelRequest item : items) {
+        for (ItemModelRequest item : pedidoRequestModel.getItems()) {
             Optional<Medicamento> medicamento = medicamentoRepository.findById(item.getIdMedicamento());
             if (medicamento.isPresent()) {
                 // Antes de agregarlo hay q verificar el inventario
@@ -48,7 +51,7 @@ public class PedidoService {
         }
 
         for (Medicamento medicamento : medicamentos) {
-            for (ItemModelRequest itemRequest : items) {
+            for (ItemModelRequest itemRequest : pedidoRequestModel.getItems()) {
                 if (medicamento.getIdMedicamento().longValue() == itemRequest.getIdMedicamento().longValue()) {
                     Item item = new Item();
                     item.setCantidadSolicitada(itemRequest.getCantidadSolicitada());
@@ -93,11 +96,13 @@ public class PedidoService {
         pedidoModel.setFechaPedido(pedido.getFechaPedido());
         pedidoModel.setIdPedido(pedido.getIdPedido());
         pedidoModel.setTotalPedido(pedido.getTotalPedido());
+        pedidoModel.setDireccionEntrega(pedido.getDireccionEntrega());
+        pedidoModel.setZipDestino(pedido.getZipDestino());
 
         for (Item item : pedido.getItems()) {
             ItemModelResponse itemResponse = new ItemModelResponse();
             itemResponse.setCantidadSolicitada(item.getCantidadSolicitada());
-            itemResponse.setIdMedicamento(item.getIdItem());
+            itemResponse.setIdMedicamento(item.getMedicamento().getIdMedicamento());
             itemResponse.setNombre(item.getMedicamento().getNombre());
             itemResponse.setPrecioUnitario(item.getMedicamento().getPrecioUnitario());
             itemResponse.setTotalItem(item.getTotalItem());
