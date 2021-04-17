@@ -31,4 +31,16 @@ public class ActivoFisico implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fk_inventario")
     private Inventario inventario;
+
+    public Boolean estaDisponible() {
+        return this.cantidadEnExistencia > 0;
+    }
+
+    public Integer reducirCantidadExistencia(Integer cantidadSolicitada) {
+        if(this.cantidadEnExistencia - cantidadSolicitada <= 0){
+            this.cantidadEnExistencia = 0;
+        }
+        this.cantidadEnExistencia = this.cantidadEnExistencia - cantidadSolicitada;
+        return this.cantidadEnExistencia;
+    }
 }

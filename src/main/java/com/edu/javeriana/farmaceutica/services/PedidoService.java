@@ -28,6 +28,7 @@ public class PedidoService {
     private final ClienteRespository clienteRepository;
     private final MedicamentoRepository medicamentoRepository;
     private final PedidoRepository pedidoRepository;
+    private final ActivoFisicoService activoFisicoService;
 
     public PedidoModel crearPedido(Long idCliente, PedidoRequestModel pedidoRequestModel) throws Exception {
 
@@ -45,18 +46,21 @@ public class PedidoService {
         for (ItemModelRequest item : pedidoRequestModel.getItems()) {
             Optional<Medicamento> medicamento = medicamentoRepository.findById(item.getIdMedicamento());
             if (medicamento.isPresent()) {
-                // Antes de agregarlo hay q verificar el inventario
-                medicamentos.add(medicamento.get());
+                if (activoFisicoService.verificarDisponibilidad(medicamento.get())) {
+                    medicamentos.add(medicamento.get());
+                }
             }
         }
 
         for (Medicamento medicamento : medicamentos) {
             for (ItemModelRequest itemRequest : pedidoRequestModel.getItems()) {
                 if (medicamento.getIdMedicamento().longValue() == itemRequest.getIdMedicamento().longValue()) {
+                    Integer cantidadDisponible = activoFisicoService.verificarCantidadEnExistencia(medicamento,
+                            itemRequest.getCantidadSolicitada());
                     Item item = new Item();
                     item.setCantidadSolicitada(itemRequest.getCantidadSolicitada());
                     item.setMedicamento(medicamento);
-                    item.setTotalItem(medicamento.getPrecioUnitario() * itemRequest.getCantidadSolicitada());
+                    item.setTotalItem(medicamento.getPrecioUnitario() * cantidadDisponible);
                     pedido.agregarItem(item);
                 }
             }
@@ -67,17 +71,16 @@ public class PedidoService {
         return mapearPedidoModel(pedidoRepository.save(pedido));
     }
 
-    public PedidoModel obtenerPedido(Long idPedido) throws Exception{
-        
-        Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
-            () -> new Exception("Pedido no encontrado con id: " + idPedido)
-        );
+    public PedidoModel obtenerPedido(Long idPedido) throws Exception {
+
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new Exception("Pedido no encontrado con id: " + idPedido));
 
         return mapearPedidoModel(pedido);
     }
 
-    public List<PedidoModel> obtenerListaPedidos() throws Exception{
-        
+    public List<PedidoModel> obtenerListaPedidos() throws Exception {
+
         List<Pedido> pedidos = pedidoRepository.findAll();
         List<PedidoModel> pedidosModel = new ArrayList<>();
 
@@ -88,7 +91,7 @@ public class PedidoService {
         return pedidosModel;
     }
 
-    private PedidoModel mapearPedidoModel(Pedido pedido){
+    private PedidoModel mapearPedidoModel(Pedido pedido) {
 
         PedidoModel pedidoModel = new PedidoModel();
         List<ItemModelResponse> itemsResponse = new ArrayList<>();
