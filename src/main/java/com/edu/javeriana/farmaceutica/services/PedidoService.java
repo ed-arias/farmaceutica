@@ -58,7 +58,7 @@ public class PedidoService {
                     Integer cantidadDisponible = activoFisicoService.verificarCantidadEnExistencia(medicamento,
                             itemRequest.getCantidadSolicitada());
                     Item item = new Item();
-                    item.setCantidadSolicitada(itemRequest.getCantidadSolicitada());
+                    item.setCantidadSolicitada(cantidadDisponible);
                     item.setMedicamento(medicamento);
                     item.setTotalItem(medicamento.getPrecioUnitario() * cantidadDisponible);
                     pedido.agregarItem(item);
