@@ -3,7 +3,9 @@ package com.edu.javeriana.farmaceutica.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.edu.javeriana.farmaceutica.entities.Oferta;
 import com.edu.javeriana.farmaceutica.entities.Proveedor;
+import com.edu.javeriana.farmaceutica.models.OfertaModel;
 import com.edu.javeriana.farmaceutica.models.ProveedorModel;
 import com.edu.javeriana.farmaceutica.repositories.ProveedorRepository;
 
@@ -78,5 +80,33 @@ public class ProveedorService {
         proveedorModel.setRazonSocial(proveedor.getRazonSocial());
 
         return proveedorModel;
+    }
+
+    public List<OfertaModel> obtenerOfertasPorProveedor(Long idProveedor) throws Exception{
+
+        Proveedor proveedor = proveedorRepository.findById(idProveedor)
+                .orElseThrow(() -> new Exception("Proveedor no encontrado con id: " + idProveedor));
+        
+        List<OfertaModel> ofertasModel = new ArrayList<>();
+        List<Oferta> ofertas = proveedor.getOfertas();
+
+        for (Oferta oferta : ofertas) {
+            OfertaModel ofertaModel = new OfertaModel();
+            ofertaModel = mapearOfertaModel(oferta);
+            ofertasModel.add(ofertaModel);
+        }
+
+        return ofertasModel;
+
+    }
+
+    private OfertaModel mapearOfertaModel(Oferta oferta) {
+        OfertaModel ofertaModel = new OfertaModel();
+        ofertaModel.setCosto(oferta.getCosto());
+        ofertaModel.setDiasParaEntrega(oferta.getDiasParaEntrega());
+        ofertaModel.setId(oferta.getIdOferta());
+        ofertaModel.setIdPedido(oferta.getPedido().getIdPedido());
+        ofertaModel.setProveedor(oferta.getProveedor().getRazonSocial());
+        return ofertaModel;
     }
 }

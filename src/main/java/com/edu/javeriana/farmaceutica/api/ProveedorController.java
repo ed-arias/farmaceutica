@@ -2,6 +2,7 @@ package com.edu.javeriana.farmaceutica.api;
 
 import java.util.List;
 
+import com.edu.javeriana.farmaceutica.models.OfertaModel;
 import com.edu.javeriana.farmaceutica.models.ProveedorModel;
 import com.edu.javeriana.farmaceutica.services.ProveedorService;
 
@@ -44,5 +45,10 @@ public class ProveedorController {
         return new ResponseEntity<>(proveedorService.actualizarProveedor(id, proveedorModel), HttpStatus.OK);
     }
 
+    @GetMapping("/proveedores/{id}/ofertas")
+    public ResponseEntity<List<OfertaModel>> obtenerOfertasPorProveedor(@PathVariable Long id)
+            throws Exception {
+        return new ResponseEntity<>(proveedorService.obtenerOfertasPorProveedor(id), HttpStatus.OK);
+    }
 
 }
