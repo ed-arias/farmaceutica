@@ -6,7 +6,6 @@ import java.util.List;
 import com.edu.javeriana.farmaceutica.entities.Cliente;
 import com.edu.javeriana.farmaceutica.models.ClienteModel;
 import com.edu.javeriana.farmaceutica.repositories.ClienteRespository;
-import com.edu.javeriana.farmaceutica.repositories.PedidoRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import lombok.Data;
 @Service
 public class ClienteService {
 
-    private final PedidoRepository pedidoRepository;
     private final ClienteRespository clienteRespository;
 
     public ClienteModel crearCliente(ClienteModel clienteModel) {

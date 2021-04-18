@@ -23,6 +23,7 @@ public class Proveedor implements Serializable {
     private Long idProveedor;
     private String nit;
     private String razonSocial;
+    private String direccion;
     private Boolean dadoDeAlta;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedor")
