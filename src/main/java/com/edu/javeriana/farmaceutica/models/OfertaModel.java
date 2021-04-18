@@ -9,4 +9,5 @@ public class OfertaModel {
     private Long idPedido;
     private Float costo;
     private Integer diasParaEntrega;
+    private String proveedor;
 }

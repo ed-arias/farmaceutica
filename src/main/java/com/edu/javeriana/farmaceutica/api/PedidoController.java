@@ -2,6 +2,7 @@ package com.edu.javeriana.farmaceutica.api;
 
 import java.util.List;
 
+import com.edu.javeriana.farmaceutica.models.OfertaModel;
 import com.edu.javeriana.farmaceutica.models.PedidoModel;
 import com.edu.javeriana.farmaceutica.models.PedidoRequestModel;
 import com.edu.javeriana.farmaceutica.services.PedidoService;
@@ -40,6 +41,12 @@ public class PedidoController {
     public ResponseEntity<List<PedidoModel>> obtenerListaPedidos()
             throws Exception {
         return new ResponseEntity<>(pedidoService.obtenerListaPedidos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/pedidos/{id}/ofertas")
+    public ResponseEntity<List<OfertaModel>> obtenerOfertasPorPedido(@PathVariable Long id)
+            throws Exception {
+        return new ResponseEntity<>(pedidoService.obtenerOfertasPorPedido(id), HttpStatus.OK);
     }
 
 }

@@ -8,9 +8,11 @@ import java.util.Optional;
 import com.edu.javeriana.farmaceutica.entities.Cliente;
 import com.edu.javeriana.farmaceutica.entities.Item;
 import com.edu.javeriana.farmaceutica.entities.Medicamento;
+import com.edu.javeriana.farmaceutica.entities.Oferta;
 import com.edu.javeriana.farmaceutica.entities.Pedido;
 import com.edu.javeriana.farmaceutica.models.ItemModelRequest;
 import com.edu.javeriana.farmaceutica.models.ItemModelResponse;
+import com.edu.javeriana.farmaceutica.models.OfertaModel;
 import com.edu.javeriana.farmaceutica.models.PedidoModel;
 import com.edu.javeriana.farmaceutica.models.PedidoRequestModel;
 import com.edu.javeriana.farmaceutica.repositories.ClienteRespository;
@@ -91,6 +93,34 @@ public class PedidoService {
         return pedidosModel;
     }
 
+    public List<OfertaModel> obtenerOfertasPorPedido(Long idPedido) throws Exception {
+
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new Exception("Pedido no encontrado con id: " + idPedido));
+
+        List<OfertaModel> ofertasModel = new ArrayList<>();
+        List<Oferta> ofertas = pedido.getOfertas();
+
+        for (Oferta oferta : ofertas) {
+            OfertaModel ofertaModel = new OfertaModel();
+            ofertaModel = mapearOfertaModel(oferta);
+            ofertasModel.add(ofertaModel);
+        }
+
+        return ofertasModel;
+
+    }
+
+    private OfertaModel mapearOfertaModel(Oferta oferta) {
+        OfertaModel ofertaModel = new OfertaModel();
+        ofertaModel.setCosto(oferta.getCosto());
+        ofertaModel.setDiasParaEntrega(oferta.getDiasParaEntrega());
+        ofertaModel.setId(oferta.getIdOferta());
+        ofertaModel.setIdPedido(oferta.getPedido().getIdPedido());
+        ofertaModel.setProveedor(oferta.getProveedor().getRazonSocial());
+        return ofertaModel;
+    }
+
     private PedidoModel mapearPedidoModel(Pedido pedido) {
 
         PedidoModel pedidoModel = new PedidoModel();
@@ -116,4 +146,5 @@ public class PedidoService {
 
         return pedidoModel;
     }
+
 }
