@@ -10,4 +10,5 @@ public class OfertaModel {
     private Float costo;
     private Integer diasParaEntrega;
     private String proveedor;
+    private String cliente;
 }

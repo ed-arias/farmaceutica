@@ -107,6 +107,7 @@ public class ProveedorService {
         ofertaModel.setId(oferta.getIdOferta());
         ofertaModel.setIdPedido(oferta.getPedido().getIdPedido());
         ofertaModel.setProveedor(oferta.getProveedor().getRazonSocial());
+        ofertaModel.setCliente(oferta.getPedido().getCliente().getRazonSocial());
         return ofertaModel;
     }
 }
