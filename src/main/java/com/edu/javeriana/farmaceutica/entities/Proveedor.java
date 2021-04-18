@@ -24,7 +24,8 @@ public class Proveedor implements Serializable {
     private String nit;
     private String razonSocial;
     private String direccion;
-    private Boolean dadoDeAlta;
+    private Boolean dadoDeAlta = false;
+    private String contrasena;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedor")
     private List<Oferta> ofertas;

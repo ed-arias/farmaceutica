@@ -25,6 +25,7 @@ public class Cliente implements Serializable {
     private String nit;
     private String razonSocial;
     private String direccion;
+    private String contrasena;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
