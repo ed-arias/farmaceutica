@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.edu.javeriana.farmaceutica.entities.Oferta;
 import com.edu.javeriana.farmaceutica.entities.Proveedor;
+import com.edu.javeriana.farmaceutica.entities.Servicio;
 import com.edu.javeriana.farmaceutica.models.OfertaModel;
 import com.edu.javeriana.farmaceutica.models.ProveedorModel;
+import com.edu.javeriana.farmaceutica.models.ServicioModel;
 import com.edu.javeriana.farmaceutica.repositories.ProveedorRepository;
 
 import org.springframework.stereotype.Service;
@@ -97,6 +99,38 @@ public class ProveedorService {
         }
 
         return ofertasModel;
+
+    }
+
+    public List<ServicioModel> obtenerServiciosPorProveedor(Long idProveedor) throws Exception{
+
+        Proveedor proveedor = proveedorRepository.findById(idProveedor)
+                .orElseThrow(() -> new Exception("Proveedor no encontrado con id: " + idProveedor));
+        
+        List<ServicioModel> serviciosModel = new ArrayList<>();
+        List<Servicio> servicios = proveedor.getServicios();
+
+        for (Servicio servicio : servicios) {
+            ServicioModel servicioModel = new ServicioModel();
+            servicioModel = mapearServicioModel(servicio);
+            serviciosModel.add(servicioModel);
+        }
+
+        return serviciosModel;
+
+    }
+
+    private ServicioModel mapearServicioModel(Servicio servicio){
+
+        ServicioModel servicioModel = new ServicioModel();
+
+        servicioModel.setCosto(servicio.getCosto());
+        servicioModel.setDiasParaEntrega(servicio.getDiasParaEntrega());
+        servicioModel.setIdServicio(servicio.getIdServicio());
+        servicioModel.setZipDestino(servicio.getZipDestino());
+        servicioModel.setZipOrigen(servicio.getZipOrigen());
+
+        return servicioModel;
 
     }
 

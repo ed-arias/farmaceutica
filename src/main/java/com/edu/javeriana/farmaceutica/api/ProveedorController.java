@@ -51,4 +51,10 @@ public class ProveedorController {
         return new ResponseEntity<>(proveedorService.obtenerOfertasPorProveedor(id), HttpStatus.OK);
     }
 
+    // @GetMapping("/proveedores/{id}/servicios")
+    // public ResponseEntity<List<ServicioModel>> obtenerServicioPorProveedor(@PathVariable Long id)
+    //         throws Exception {
+    //     return new ResponseEntity<>(proveedorService.obtenerServiciosPorProveedor(id), HttpStatus.OK);
+    // }
+
 }
