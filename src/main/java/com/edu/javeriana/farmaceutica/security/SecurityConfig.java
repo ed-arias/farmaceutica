@@ -36,10 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .cors().disable()
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagge‌​r-ui.html", "/swagger-resources/configuration/security").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/clientes").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/proveedores").permitAll()
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
             .and()
             .formLogin()
             .and()
@@ -48,6 +45,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .deleteCookies("JSESSIONID")
             .invalidateHttpSession(true);
     }
+
+    /*
+    .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagge‌​r-ui.html", "/swagger-resources/configuration/security").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/clientes").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/proveedores").permitAll()
+            .anyRequest().authenticated()
+     */
 
     @Bean
     DaoAuthenticationProvider clienteAuthenticationProvider(){
