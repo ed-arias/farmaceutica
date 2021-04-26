@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Proveedor implements Serializable {
+public class Proveedor implements Serializable, User {
     
     private static final long serialVersionUID = 873488609414567154L;
 
@@ -26,6 +26,8 @@ public class Proveedor implements Serializable {
     private String direccion;
     private Boolean dadoDeAlta = false;
     private String contrasena;
+    private Boolean activo = true;
+    private String rol = "PROVEEDOR";
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedor")
     private List<Oferta> ofertas;
@@ -42,4 +44,5 @@ public class Proveedor implements Serializable {
         servicio.setProveedor(this);
         this.servicios.add(servicio);
     }
+    
 }

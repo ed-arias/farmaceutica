@@ -68,6 +68,10 @@ public class PedidoService {
             }
         }
 
+        //Aqui logica para calcular webs de proveedores
+        //Aqui logica para calcular servicios de proveedores
+        //Aqui logica para calcular ofertas de proveedores
+
         pedido.calcularTotalPedido();
 
         return mapearPedidoModel(pedidoRepository.save(pedido));

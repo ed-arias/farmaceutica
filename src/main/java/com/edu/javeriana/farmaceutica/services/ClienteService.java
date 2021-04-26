@@ -7,6 +7,7 @@ import com.edu.javeriana.farmaceutica.entities.Cliente;
 import com.edu.javeriana.farmaceutica.models.ClienteModel;
 import com.edu.javeriana.farmaceutica.repositories.ClienteRespository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.Data;
@@ -16,6 +17,7 @@ import lombok.Data;
 public class ClienteService {
 
     private final ClienteRespository clienteRespository;
+    private final PasswordEncoder passwordEncoder;
 
     public ClienteModel crearCliente(ClienteModel clienteModel) {
 
@@ -23,6 +25,7 @@ public class ClienteService {
         cliente.setDireccion(clienteModel.getDireccion());
         cliente.setNit(clienteModel.getNit());
         cliente.setRazonSocial(clienteModel.getRazonSocial());
+        cliente.setContrasena(passwordEncoder.encode(clienteModel.getContrasena()));
 
         cliente = clienteRespository.save(cliente);
 

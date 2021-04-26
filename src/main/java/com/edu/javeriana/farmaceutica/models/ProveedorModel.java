@@ -9,4 +9,5 @@ public class ProveedorModel {
     private String nit;
     private String razonSocial;
     private String direccion;
+    private String contrasena;
 }

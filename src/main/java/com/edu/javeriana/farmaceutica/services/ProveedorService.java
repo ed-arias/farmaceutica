@@ -11,6 +11,7 @@ import com.edu.javeriana.farmaceutica.models.ProveedorModel;
 import com.edu.javeriana.farmaceutica.models.ServicioModel;
 import com.edu.javeriana.farmaceutica.repositories.ProveedorRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.Data;
@@ -20,12 +21,14 @@ import lombok.Data;
 public class ProveedorService {
     
     private final ProveedorRepository proveedorRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public ProveedorModel crearProveedor(ProveedorModel proveedorModel) {
         Proveedor proveedor = new Proveedor();
         proveedor.setDireccion(proveedorModel.getDireccion());
         proveedor.setNit(proveedorModel.getNit());
         proveedor.setRazonSocial(proveedorModel.getRazonSocial());
+        proveedor.setContrasena(passwordEncoder.encode(proveedorModel.getContrasena()));
 
         proveedor = proveedorRepository.save(proveedor);
 
