@@ -10,4 +10,5 @@ public class ProveedorModel {
     private String razonSocial;
     private String direccion;
     private String contrasena;
+    private String email;
 }
