@@ -19,6 +19,7 @@ public class OfertaService {
     private ProveedorRepository proveedorRepository;
     private PedidoRepository pedidoRepository;
     private OfertaRepository ofertaRepository;
+    private final MailService mailService;
 
     public OfertaModel crearOferta(Long idProveedor, OfertaModel ofertaModel) {
 
@@ -32,6 +33,8 @@ public class OfertaService {
         oferta = ofertaRepository.save(oferta);
 
         ofertaModel.setId(oferta.getIdOferta());
+
+        mailService.sendSimpleMessage(pedido.getCliente().getEmail(), "Nueva oferta para tu pedido", "El proveedor " + proveedor.getRazonSocial() + " ha registrado una nueva ofeta para tu pedido");
 
         return ofertaModel;
     }

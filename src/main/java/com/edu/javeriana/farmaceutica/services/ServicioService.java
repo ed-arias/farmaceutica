@@ -19,8 +19,9 @@ public class ServicioService {
 
     private final ProveedorRepository proveedorRepository;
     private final ServicioRepository servicioRepository;
-    
-    public ServicioModel crearServicio(Long idProveedor, ServicioModel servicioModel) throws Exception{
+    private final MailService mailService;
+
+    public ServicioModel crearServicio(Long idProveedor, ServicioModel servicioModel) throws Exception {
 
         Servicio servicio = new Servicio();
 
@@ -37,10 +38,14 @@ public class ServicioService {
 
         servicioModel.setIdServicio(servicio.getIdServicio());
 
+        mailService.sendSimpleMessage(proveedor.getEmail(), "Nuevo servicio",
+                "Has registrado un nuevo servicio con id: " + servicio.getIdServicio() + "\n\nZip de origen: "
+                        + servicio.getZipOrigen() + "\nZip de destino: " + servicio.getZipDestino() + "\nCosto: " + servicio.getCosto());
+
         return servicioModel;
     }
 
-    public ServicioModel obtenerServicio(Long idServicio){
+    public ServicioModel obtenerServicio(Long idServicio) {
 
         Servicio servicio = servicioRepository.findById(idServicio)
                 .orElseThrow(() -> new Error("Servicio no encontrado con id: " + idServicio));
@@ -57,7 +62,7 @@ public class ServicioService {
 
     }
 
-    public ServicioModel actualizarServicio(Long idServicio, ServicioModel servicioModel){
+    public ServicioModel actualizarServicio(Long idServicio, ServicioModel servicioModel) {
 
         Servicio servicio = servicioRepository.findById(idServicio)
                 .orElseThrow(() -> new Error("Servicio no encontrado con id: " + idServicio));
@@ -72,7 +77,7 @@ public class ServicioService {
 
     }
 
-    public List<ServicioModel> obtenerListaServicios(Long idProveedor) throws Exception{
+    public List<ServicioModel> obtenerListaServicios(Long idProveedor) throws Exception {
 
         Proveedor proveedor = proveedorRepository.findById(idProveedor)
                 .orElseThrow(() -> new Exception("Proveedor no encontrado con id: " + idProveedor));
@@ -80,7 +85,7 @@ public class ServicioService {
         List<ServicioModel> serviciosModel = new ArrayList<>();
         List<Servicio> servicios = proveedor.getServicios();
 
-        for(Servicio servicio : servicios){
+        for (Servicio servicio : servicios) {
             ServicioModel servicioModel = mapearServicioModel(servicio);
             serviciosModel.add(servicioModel);
         }
@@ -89,7 +94,11 @@ public class ServicioService {
 
     }
 
-    private ServicioModel mapearServicioModel(Servicio servicio){
+    public List<Servicio> obtenerListaServicios() throws Exception {
+        return servicioRepository.findAll();
+    }
+
+    private ServicioModel mapearServicioModel(Servicio servicio) {
         ServicioModel servicioModel = new ServicioModel();
         servicioModel.setCosto(servicio.getCosto());
         servicioModel.setDiasParaEntrega(servicio.getDiasParaEntrega());
@@ -99,7 +108,7 @@ public class ServicioService {
         return servicioModel;
     }
 
-    private Servicio mapearServicio(ServicioModel servicioModel){
+    private Servicio mapearServicio(ServicioModel servicioModel) {
         Servicio servicio = new Servicio();
         servicioModel.setCosto(servicio.getCosto());
         servicioModel.setDiasParaEntrega(servicio.getDiasParaEntrega());

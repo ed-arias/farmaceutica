@@ -18,6 +18,7 @@ public class ClienteService {
 
     private final ClienteRespository clienteRespository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     public ClienteModel crearCliente(ClienteModel clienteModel) {
 
@@ -30,6 +31,8 @@ public class ClienteService {
         cliente = clienteRespository.save(cliente);
 
         clienteModel.setId(cliente.getIdCliente());
+
+        mailService.sendSimpleMessage(clienteModel.getEmail(), "Nuevo registro en Farmaceutica Javeriana", "Muchas gracias por preferirnos, ahora puedes realizar pedidos en nuestra plataforma");
 
         return clienteModel;
     }

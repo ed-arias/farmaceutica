@@ -22,6 +22,7 @@ public class ProveedorService {
     
     private final ProveedorRepository proveedorRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     public ProveedorModel crearProveedor(ProveedorModel proveedorModel) {
         Proveedor proveedor = new Proveedor();
@@ -33,6 +34,8 @@ public class ProveedorService {
         proveedor = proveedorRepository.save(proveedor);
 
         proveedorModel.setId(proveedor.getIdProveedor());
+
+        mailService.sendSimpleMessage(proveedor.getEmail(), "Nuevo registro como proveedor", "Ahora espera el resultado de nuestro análisis, nos comunicaremos cuando tengamos una respuesta para tu solicitud");
 
         return proveedorModel;
     }

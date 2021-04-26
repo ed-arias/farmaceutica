@@ -26,6 +26,7 @@ public class Cliente implements Serializable, User {
     private String razonSocial;
     private String direccion;
     private String contrasena;
+    private String email;
     private Boolean activo = true;
     private String rol = "CLIENTE";
 

@@ -26,6 +26,7 @@ public class Proveedor implements Serializable, User {
     private String direccion;
     private Boolean dadoDeAlta = false;
     private String contrasena;
+    private String email;
     private Boolean activo = true;
     private String rol = "PROVEEDOR";
 

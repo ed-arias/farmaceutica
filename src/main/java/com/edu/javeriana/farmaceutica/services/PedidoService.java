@@ -10,6 +10,7 @@ import com.edu.javeriana.farmaceutica.entities.Item;
 import com.edu.javeriana.farmaceutica.entities.Medicamento;
 import com.edu.javeriana.farmaceutica.entities.Oferta;
 import com.edu.javeriana.farmaceutica.entities.Pedido;
+import com.edu.javeriana.farmaceutica.entities.Servicio;
 import com.edu.javeriana.farmaceutica.models.ItemModelRequest;
 import com.edu.javeriana.farmaceutica.models.ItemModelResponse;
 import com.edu.javeriana.farmaceutica.models.OfertaModel;
@@ -31,6 +32,7 @@ public class PedidoService {
     private final MedicamentoRepository medicamentoRepository;
     private final PedidoRepository pedidoRepository;
     private final ActivoFisicoService activoFisicoService;
+    private final ServicioService servicioService;
 
     public PedidoModel crearPedido(Long idCliente, PedidoRequestModel pedidoRequestModel) throws Exception {
 
@@ -68,9 +70,18 @@ public class PedidoService {
             }
         }
 
-        //Aqui logica para calcular webs de proveedores
-        //Aqui logica para calcular servicios de proveedores
-        //Aqui logica para calcular ofertas de proveedores
+        List<Servicio> servicios = servicioService.obtenerListaServicios();
+
+        for (Servicio servicio : servicios) {
+            if(pedido.getZipDestino().equals(servicio.getZipDestino())){
+                Oferta oferta = new Oferta();
+                oferta.setCosto(servicio.getCosto());
+                oferta.setDiasParaEntrega(servicio.getDiasParaEntrega());
+                oferta.setPedido(pedido);
+                oferta.setProveedor(servicio.getProveedor());
+                pedido.agregarOferta(oferta);
+            }
+        }
 
         pedido.calcularTotalPedido();
 
